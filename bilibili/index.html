@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.9.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="width:300px;height:300px;margin-left: 30%;margin-top:100px;">
+    <span>头像:<img id="face" style="width: 60px;height: 60px" src=""></span>
+
+    <table border='1'>
+        <tr>
+            <td>用户名:</td>
+            <td id="name"></td>
+        </tr>
+        <tr>
+            <td>用户ID:</td>
+            <td id="user_id"></td>
+        </tr>
+        <tr>
+            <td>简介:</td>
+            <td id="sign"></td>
+        </tr>
+        <tr>
+            <td>用户关注数:</td>
+            <td id="user_follow"></td>
+        </tr>
+        <tr>
+            <td>用户性别:</td>
+            <td id="sex"></td>
+        </tr>
+        <tr>
+            <td>用户等级:</td>
+            <td id="level"></td>
+        </tr>
+        <tr>
+            <td>会员状态:</td>
+            <td id="vip"></td>
+        </tr>
+        <tr>
+            <td>头像框:</td>
+            <td id="pendant"></td>
+        </tr>
+        <tr>
+            <td>佩戴勋章:</td>
+            <td id="nameplate"></td>
+        </tr>
+        <tr>
+            <td>直播佩戴勋章:</td>
+            <td id="metal"></td>
+        </tr>
+        <tr>
+            <td>直播勋章UP主:</td>
+            <td ><a id="metal_up"></a> </td>
+        </tr>
+        <tr>
+            <td>粉丝勋章所属主播TAG:</td>
+            <td ><a id="metal_tag"></a> </td>
+        </tr>
+        <tr>
+            <td>粉丝勋章所属主播分区:</td>
+            <td ><a id="metal_class"></a> </td>
+        </tr>
+
+
+    </table>
+    <input type="text" id="qwe"/><br>
+    <button onclick="a()">点击查询</button>
+</div>
+
+<script>
+    function b() {
+        var UID = $("#qwe")[0].value;
+        if (UID == "") {
+            alert("报错了,你没有输入UID,帮你输入我的UID吧")
+            return ("37958451")
+        } else return UID;
+    }
+
+    function a() {
+        var UID = b()
+        $.post("./hello.php", UID, function (data) {
+            alert(data);
+            $("#user_id")[0].innerHTML = $.parseJSON(data)["data"]["uid_home_follow"]["data"]["mid"];
+            $("#user_follow")[0].innerHTML = $.parseJSON(data)["data"]["uid_home_follow"]["data"]["follower"];
+            $("#name")[0].innerHTML = $.parseJSON(data)["data"]["uid_home_info"]["data"]["name"];
+            $("#sign")[0].innerHTML = $.parseJSON(data)["data"]["uid_home_info"]["data"]["sign"];
+            $("#sex")[0].innerHTML = $.parseJSON(data)["data"]["uid_home_info"]["data"]["sex"];
+            $("#level")[0].innerHTML = $.parseJSON(data)["data"]["uid_home_info"]["data"]["level"];
+            $("#vip")[0].innerHTML = ($.parseJSON(data)["data"]["uid_home_info"]["data"]["vip"]["label"]["text"]);
+            $("#pendant")[0].innerHTML = ($.parseJSON(data)["data"]["uid_home_info"]["data"]["pendant"]["name"]);
+            $("#nameplate")[0].innerHTML = ($.parseJSON(data)["data"]["uid_home_info"]["data"] ["nameplate"]["name"]);
+
+
+            // $("#user_follower")[0].innerHTML = $.parseJSON(data)["follower"];
+            // $("#user_follow")[0].innerHTML = $.parseJSON(data)["following"];
+            if (($.parseJSON(data)["data"]["uid_live_medal"]["message"]) == "success"){
+                $("#metal")[0].innerHTML = "该UID没有勋章";
+                $("#metal_up")[0].innerHTML = "该UID没有勋章";
+            }else{
+                $("#metal")[0].innerHTML = ($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["medal_name"]);
+                $("#metal_up")[0].innerHTML = ($.parseJSON(data)["data"]["uid_live_medal"]["data"]["roominfo"] ["uname"]);
+                $("#metal_tag")[0].innerHTML = ($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["roominfo"]["tags"]);
+                $("#metal_class")[0].innerHTML = ($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["roominfo"]["area_name"]);
+                $("#metal_up").attr("href","https://space.bilibili.com/"+($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["roominfo"]["uid"]));
+                $("#face").attr("src",$.parseJSON(data)["data"] ["uid_face"]["face_url"]);
+                //$("metal_up")[0]["srcText"].innerHTML= ($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["target_name"]);
+            }
+        })
+    }
+
+    //$("#tupian")[0].src="https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png";
+    // $(".user_id")[0].innerHTML = "12321412";
+    // $("#user_follower")[0].innerHTML = "123";
+    // $.post("./hello.php","37958451",function(data){
+    //     document.write(data);
+    // })
+    //
+</script>
+</body>
+</html>

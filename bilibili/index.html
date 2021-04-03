@@ -92,19 +92,23 @@
             $("#pendant")[0].innerHTML = ($.parseJSON(data)["data"]["uid_home_info"]["data"]["pendant"]["name"]);
             $("#nameplate")[0].innerHTML = ($.parseJSON(data)["data"]["uid_home_info"]["data"] ["nameplate"]["name"]);
 
-
+            $("#face")[0].src=($.parseJSON(data)["data"] ["uid_face"]["face_url"]);
             // $("#user_follower")[0].innerHTML = $.parseJSON(data)["follower"];
             // $("#user_follow")[0].innerHTML = $.parseJSON(data)["following"];
             if (($.parseJSON(data)["data"]["uid_live_medal"]["message"]) == "success"){
                 $("#metal")[0].innerHTML = "该UID没有勋章";
                 $("#metal_up")[0].innerHTML = "该UID没有勋章";
+                $("#metal_tag")[0].innerHTML = "该UID没有勋章";
+                $("#metal_class")[0].innerHTML = "该UID没有勋章";
+                $("#metal_up")[0].href="#";
             }else{
                 $("#metal")[0].innerHTML = ($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["medal_name"]);
                 $("#metal_up")[0].innerHTML = ($.parseJSON(data)["data"]["uid_live_medal"]["data"]["roominfo"] ["uname"]);
                 $("#metal_tag")[0].innerHTML = ($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["roominfo"]["tags"]);
                 $("#metal_class")[0].innerHTML = ($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["roominfo"]["area_name"]);
-                $("#metal_up").attr("href","https://space.bilibili.com/"+($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["roominfo"]["uid"]));
-                $("#face").attr("src",$.parseJSON(data)["data"] ["uid_face"]["face_url"]);
+                $("#metal_up")[0].href=("href","https://space.bilibili.com/"+($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["roominfo"]["uid"]));
+
+
                 //$("metal_up")[0]["srcText"].innerHTML= ($.parseJSON(data)["data"]["uid_live_medal"]["data"] ["target_name"]);
             }
         })
